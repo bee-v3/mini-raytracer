@@ -14,14 +14,17 @@ int main()
     stbi_image_free(data);
 */
     int width = 512, height = 512, channels = 3;
+    const char* filename = "png_output.png";
     std::vector<char> imgbuffer(width * height * channels);
         for (int j = height - 1; j >= 0; --j) {
             for (int i = 0; i < width; i++) {
-                imgbuffer[(j * height + i) * channels + 0] = (double(i) / (width - 1) * 255.999);
-                imgbuffer[(j * height + i) * channels + 1] = (double(j) / (height -1) * 255.999);
-                imgbuffer[(j * height + i) * channels + 2] = 0;
+                color pixel(double(i) / (width - 1), (height - 1 - double(j)) / (height - 1), 0.25);
+                imgbuffer[(j * height + i) * channels + 0] = pixel.x() * 255;
+                imgbuffer[(j * height + i) * channels + 1] = pixel.y() * 255;
+                imgbuffer[(j * height + i) * channels + 2] = pixel.z() * 255;
+                
             }
         }
-    stbi_write_png("rainbow.png", width, height, channels, imgbuffer.data(), 0);
+    stbi_write_png(filename, width, height, channels, imgbuffer.data(), 0);
     return 0;
 }
